@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Task - Urban Development Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Submit a New Urban Task</h2>
+        <form id="taskForm">
+            <label for="taskName">Task Name:</label>
+            <input type="text" id="taskName" required>
+            
+            <label for="taskDescription">Description:</label>
+            <textarea id="taskDescription" required placeholder="Describe the urban improvement task, such as 'Plant trees in central park' or 'Repair broken sidewalks.'"></textarea>
+            
+            <label for="authority">Municipal Authority:</label>
+            <input type="text" id="authority" required>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

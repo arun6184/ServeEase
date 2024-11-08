@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant Dashboard - CityServe Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, Merchant!</h2>
+        <h3>Available Tasks</h3>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        const currentMerchant = localStorage.getItem("currentUser");
+
+        // Load all tasks from Local Storage
+        function loadTasks() {
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = ""; // Clear task list
+
+            // Retrieve all tasks
+            let allTasks = JSON.parse(localStorage.getItem("allTasks")) || [];
+            allTasks.forEach(task => {
+                const taskItem = document.createElement("li");
+
+                // Check if a task has not been assigned yet
+                if (!task.merchant) {
+                    taskItem.innerHTML = `
+                        <strong>${task.description}</strong> - Location: ${task.location}
+                        <button onclick="bookTask(${task.id})">Book</button>
+                    `;
+                    taskList.appendChild(taskItem);
+                }
+            });
+        }
+
+        // Function to book a task
+        function bookTask(taskId) {
+            // Load all tasks
+            let allTasks = JSON.parse(localStorage.getItem("allTasks")) || [];
+
+            // Find the task by ID and assign the current merchant
+            allTasks = allTasks.map(task => {
+                if (task.id === taskId) {
+                    task.merchant = {
+                        merchantName: currentMerchant,
+                        contactInfo: "123-456-7890" // Placeholder contact info
+                    };
+                    alert(`You have booked the task: ${task.description}`);
+                }
+                return task;
+            });
+
+            // Save updated task list to Local Storage
+            localStorage.setItem("allTasks", JSON.stringify(allTasks));
+
+            // Reload tasks to reflect the booking
+            loadTasks();
+        }
+
+        // Load tasks on page load
+        loadTasks();
+    </script>
+</body>
+</html>

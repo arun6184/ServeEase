@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CityServe Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Register for CityServe Platform</h2>
+        <form id="registerForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+
+            <label for="role">Role:</label>
+            <select id="role" required>
+                <option value="user">User</option>
+                <option value="merchant">Merchant</option>
+            </select>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Get values from form inputs
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const role = document.getElementById("role").value;
+
+            // Create a user object
+            const user = {
+                username: username,
+                password: password,
+                role: role
+            };
+
+            // Save user details in Local Storage
+            localStorage.setItem(username, JSON.stringify(user));
+
+            alert("Registration successful! You can now log in.");
+            window.location.href = "login.html"; // Redirect to login page
+        });
+    </script>
+</body>
+</html>
+s

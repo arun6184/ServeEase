@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - CityServe Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, User!</h2>
+        
+        <!-- Task Creation Form -->
+        <h3>Create a New Task</h3>
+        <form id="taskForm">
+            <label for="taskDescription">Task Description:</label>
+            <input type="text" id="taskDescription" required>
+            
+            <label for="taskLocation">Location:</label>
+            <input type="text" id="taskLocation" required>
+            
+            <button type="submit">Create Task</button>
+        </form>
+
+        <!-- User's Task List -->
+        <h3>Your Tasks</h3>
+        <ul id="userTaskList"></ul>
+    </div>
+
+    <script>
+        const currentUser = localStorage.getItem("currentUser");
+
+        // Load all tasks or initialize as empty array if none exist
+        let allTasks = JSON.parse(localStorage.getItem("allTasks")) || [];
+
+        // Display user's tasks and merchant info if booked
+        const userTaskList = document.getElementById("userTaskList");
+        function displayUserTasks() {
+            userTaskList.innerHTML = ""; // Clear the list
+
+            // Filter tasks for the current user
+            const userTasks = allTasks.filter(task => task.user === currentUser);
+            userTasks.forEach(task => {
+                const taskItem = document.createElement("li");
+                taskItem.innerHTML = `<strong>${task.description}</strong> - Location: ${task.location}`;
+
+                // Check if a merchant is assigned
+                if (task.merchant) {
+                    taskItem.innerHTML += `<br><strong>Assigned Merchant:</strong> ${task.merchant.merchantName}, <strong>Contact:</strong> ${task.merchant.contactInfo}`;
+                } else {
+                    taskItem.innerHTML += `<br><em>Not yet assigned</em>`;
+                }
+
+                userTaskList.appendChild(taskItem);
+            });
+        }
+
+        // Display tasks on page load
+        displayUserTasks();
+
+        // Handle task creation
+        document.getElementById("taskForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Get form data
+            const description = document.getElementById("taskDescription").value;
+            const location = document.getElementById("taskLocation").value;
+
+            // Create a new task object
+            const newTask = {
+                id: Date.now(),
+                user: currentUser,
+                description,
+                location,
+                merchant: null // No merchant assigned initially
+            };
+
+            // Add new task to the global task list and save to Local Storage
+            allTasks.push(newTask);
+            localStorage.setItem("allTasks", JSON.stringify(allTasks));
+
+            // Reset form and display updated tasks
+            document.getElementById("taskForm").reset();
+            displayUserTasks();
+        });
+
+        // Refresh tasks on page load to capture updated merchant info
+        window.addEventListener("load", displayUserTasks);
+    </script>
+</body>
+</html>

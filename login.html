@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CityServe Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login to CityServe Platform</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Get values from form inputs
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Retrieve user data from Local Storage
+            const storedUser = localStorage.getItem(username);
+
+            if (storedUser) {
+                // Parse the stored user data
+                const user = JSON.parse(storedUser);
+
+                // Check if password matches
+                if (user.password === password) {
+                    alert("Login successful!");
+
+                    // Redirect based on role
+                    if (user.role === "user") {
+                        window.location.href = "user_dashboard.html";
+                    } else if (user.role === "merchant") {
+                        window.location.href = "merchant_dashboard.html";
+                    }
+                } else {
+                    alert("Incorrect password. Please try again.");
+                }
+            } else {
+                alert("Username not found. Please register first.");
+            }
+        });
+        // Inside login.html script
+if (user.password === password) {
+    alert("Login successful!");
+
+    // Save the current user in Local Storage
+    localStorage.setItem("currentUser", username);
+
+    // Redirect based on role
+    if (user.role === "user") {
+        window.location.href = "user_dashboard.html";
+    } else if (user.role === "merchant") {
+        window.location.href = "merchant_dashboard.html";
+    }
+}
+
+    </script>
+</body>
+</html>
